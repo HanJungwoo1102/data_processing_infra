@@ -1,8 +1,8 @@
 resource "aws_instance" "ec2_instance" {
     ami = var.ec2_instance_config.ami
     instance_type = var.ec2_instance_config.type
-    subnet_id = "${aws_subnet.subnet.id}"
-    vpc_security_group_ids = ["${aws_default_security_group.default_security_group.id}"]
+    subnet_id = "${aws_subnet.public.id}"
+    vpc_security_group_ids = ["${aws_default_security_group.public.id}"]
     # root disk
     root_block_device {
         volume_size           = var.ec2_instance_config.root_volume_size
@@ -22,7 +22,12 @@ resource "aws_instance" "ec2_instance" {
     tags = { Name = "${var.pre_tag_name}-ec2-instance" }
 }
 
-resource "aws_eip_association" "elastic_ip_association" {
-  instance_id   = aws_instance.ec2_instance.id
-  allocation_id = aws_eip.elastic_ip.id
+resource "aws_eip" "ec2_instance" {
+    vpc = true  #생성 범위 지정
+    tags = { Name = "${var.pre_tag_name}-elastic-ip-ec2-instance" }
+}
+
+resource "aws_eip_association" "ec2_instance" {
+    instance_id   = aws_instance.ec2_instance.id
+    allocation_id = aws_eip.ec2_instance.id
 }
