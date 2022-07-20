@@ -24,7 +24,7 @@ resource "aws_instance" "ec2_instance" {
 
 resource "aws_eip" "ec2_instance" {
     vpc = true  #생성 범위 지정
-    tags = { Name = "${var.pre_tag_name}-elastic-ip-ec2-instance" }
+    tags = { Name = "${var.pre_tag_name}-eip-ec2-instance" }
 }
 
 resource "aws_eip_association" "ec2_instance" {

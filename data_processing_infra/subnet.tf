@@ -49,19 +49,19 @@ resource "aws_route_table_association" "subnet" {
 # private route table - nat gateway
 resource "aws_route" "rtb_nat" {
     route_table_id = aws_route_table.private.id
-	nat_gateway_id = aws_nat_gateway.nat_gateway.id
+	nat_gateway_id = aws_nat_gateway.nat_gw.id
 	destination_cidr_block = "0.0.0.0/0"
 }
 
 # NAT 용 elastic ip 생성
-resource "aws_eip" "nat" {
+resource "aws_eip" "nat_gw" {
     vpc = true  #생성 범위 지정
-    tags = { Name = "${var.pre_tag_name}-elastic-ip-nat" }
+    tags = { Name = "${var.pre_tag_name}-eip-nat-gw" }
 }
 
 # NAT
-resource "aws_nat_gateway" "nat_gateway" {
-    allocation_id = aws_eip.nat.id
+resource "aws_nat_gateway" "nat_gw" {
+    allocation_id = aws_eip.nat_gw.id
     subnet_id = aws_subnet.public.id
-    tags = { Name = "${var.pre_tag_name}-nat-gateway" }
+    tags = { Name = "${var.pre_tag_name}-nat-gw" }
 }
