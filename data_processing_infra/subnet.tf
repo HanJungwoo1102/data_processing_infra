@@ -10,7 +10,7 @@ resource "aws_subnet" "public" {
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.vpc.id
 
-  tags = { Name = "${var.pre_tag_name}-route-table-public" }
+  tags = { Name = "${var.pre_tag_name}-rtb-public" }
 }
 
 # public route table - public subnet
@@ -20,7 +20,7 @@ resource "aws_route_table_association" "public" {
 }
 
 # route table - internet gateway
-resource "aws_route" "rt_igw" {
+resource "aws_route" "rtb_igw" {
 	route_table_id = aws_route_table.public.id
 	gateway_id = aws_internet_gateway.igw.id
 	destination_cidr_block = "0.0.0.0/0"
@@ -37,17 +37,18 @@ resource "aws_subnet" "private" {
 # Public Route Table
 resource "aws_route_table" "private" {
     vpc_id = aws_vpc.vpc.id
-    tags = { Name = "${var.pre_tag_name}-route-table-private" }
+    tags = { Name = "${var.pre_tag_name}-rtb-private" }
 }
 
-# route table - private subnet
+# private route table - private subnet
 resource "aws_route_table_association" "subnet" {
     subnet_id = aws_subnet.private.id
     route_table_id = aws_route_table.private.id
 }
 
-resource "aws_route" "rt_nat" {
-    route_table_id = aws_route_table.public.id
+# private route table - nat gateway
+resource "aws_route" "rtb_nat" {
+    route_table_id = aws_route_table.private.id
 	nat_gateway_id = aws_nat_gateway.nat_gateway.id
 	destination_cidr_block = "0.0.0.0/0"
 }
