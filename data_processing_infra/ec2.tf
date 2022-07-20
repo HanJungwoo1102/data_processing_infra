@@ -1,8 +1,8 @@
 resource "aws_instance" "ec2_instance" {
     ami = var.ec2_instance_config.ami
     instance_type = var.ec2_instance_config.type
-    subnet_id = "${aws_subnet.public.id}"
-    vpc_security_group_ids = ["${aws_default_security_group.default.id}"]
+    subnet_id = aws_subnet.public.id
+    vpc_security_group_ids = [aws_default_security_group.default.id]
     # root disk
     root_block_device {
         volume_size           = var.ec2_instance_config.root_volume_size

@@ -1,22 +1,16 @@
 # Subnet
 resource "aws_subnet" "public" {
     vpc_id = aws_vpc.vpc.id
-    cidr_block = "10.0.0.0/28"
-    availability_zone = "ap-northeast-2a"
+    cidr_block = var.subnet_cidr_blocks[0]
+    availability_zone = var.availability_zone_1
     tags = { Name = "${var.pre_tag_name}-subnet-public" }
 }
 
 # Public Route Table
 resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.vpc.id
+    vpc_id = aws_vpc.vpc.id
 
-  tags = { Name = "${var.pre_tag_name}-rtb-public" }
-}
-
-# public route table - public subnet
-resource "aws_route_table_association" "public" {
-  subnet_id      = aws_subnet.public.id
-  route_table_id = aws_route_table.public.id
+    tags = { Name = "${var.pre_tag_name}-rtb-public" }
 }
 
 # route table - internet gateway
@@ -26,24 +20,31 @@ resource "aws_route" "rtb_igw" {
 	destination_cidr_block = "0.0.0.0/0"
 }
 
-# Private Subnet
-resource "aws_subnet" "private" {
-    vpc_id = aws_vpc.vpc.id
-    cidr_block = "10.0.0.16/28"
-    availability_zone = "ap-northeast-2a"
-    tags = { Name = "${var.pre_tag_name}-subnet-private" }
+# public route table - public subnet
+resource "aws_route_table_association" "public" {
+    subnet_id      = aws_subnet.public.id
+    route_table_id = aws_route_table.public.id
 }
 
-# Public Route Table
+# Private Subnet
+resource "aws_subnet" "private_1" {
+    vpc_id = aws_vpc.vpc.id
+    cidr_block = var.subnet_cidr_blocks[1]
+    availability_zone = var.availability_zone_1
+    tags = { Name = "${var.pre_tag_name}-subnet-private-1" }
+}
+
+resource "aws_subnet" "private_2" {
+    vpc_id = aws_vpc.vpc.id
+    cidr_block = var.subnet_cidr_blocks[2]
+    availability_zone = var.availability_zone_2
+    tags = { Name = "${var.pre_tag_name}-subnet-private-2" }
+}
+
+# Private Route Table
 resource "aws_route_table" "private" {
     vpc_id = aws_vpc.vpc.id
     tags = { Name = "${var.pre_tag_name}-rtb-private" }
-}
-
-# private route table - private subnet
-resource "aws_route_table_association" "subnet" {
-    subnet_id = aws_subnet.private.id
-    route_table_id = aws_route_table.private.id
 }
 
 # private route table - nat gateway
@@ -51,6 +52,18 @@ resource "aws_route" "rtb_nat" {
     route_table_id = aws_route_table.private.id
 	nat_gateway_id = aws_nat_gateway.nat_gw.id
 	destination_cidr_block = "0.0.0.0/0"
+}
+
+# private route table - private subnet 1
+resource "aws_route_table_association" "subnet_1" {
+    subnet_id = aws_subnet.private_1.id
+    route_table_id = aws_route_table.private.id
+}
+
+# private route table - private subnet 2
+resource "aws_route_table_association" "subnet_2" {
+    subnet_id = aws_subnet.private_2.id
+    route_table_id = aws_route_table.private.id
 }
 
 # NAT 용 elastic ip 생성
