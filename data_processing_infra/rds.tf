@@ -13,7 +13,7 @@ resource "aws_db_instance" "main" {
     tags = { Name = "${var.pre_tag_name}-db-instance" }
 }
 
-resource "aws_db_subnet_group" "private" {
+resource "aws_db_subnet_group" "db" {
     name       = "${var.pre_tag_name}-subnet-group-db"
     subnet_ids = [aws_subnet.db_2.id, aws_subnet.db_1.id]
 

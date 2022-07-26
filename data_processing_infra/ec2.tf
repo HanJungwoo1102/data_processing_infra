@@ -19,12 +19,12 @@ resource "aws_instance" "data_management" {
         delete_on_termination = true
     }
     key_name = var.ec2_config_data_management.key_pair_name
-    tags = { Name = "${var.pre_tag_name}-ec2-data_management" }
+    tags = { Name = "${var.pre_tag_name}-ec2-data-management" }
 }
 
 resource "aws_eip" "data_management" {
     vpc = true  #생성 범위 지정
-    tags = { Name = "${var.pre_tag_name}-eip-data_management" }
+    tags = { Name = "${var.pre_tag_name}-eip-data-management" }
 }
 
 resource "aws_eip_association" "data_management" {
