@@ -2,15 +2,11 @@ variable "pre_tag_name" {
     type = string
 }
 
-variable "ec2_key_pair" {
-    type = string
-}
-
 variable "default_tags" {
     type = map(string)
 }
 
-variable "ec2_instance_config" {
+variable "ec2_config_data_management" {
     type = map(string)
 }
 
@@ -26,6 +22,26 @@ variable "availability_zone_2" {
     type = string
 }
 
-variable "subnet_cidr_blocks" {
-    type = list(string)
+variable vpc_cidr_block {
+    type = string
+}
+
+variable subnet_cidr_block_public {
+    type = string
+}
+
+variable subnet_cidr_block_api_server_1 {
+    type = string
+}
+
+variable subnet_cidr_block_api_server_2 {
+    type = string
+}
+
+variable subnet_cidr_block_db_1 {
+    type = string
+}
+
+variable subnet_cidr_block_db_2 {
+    type = string
 }

@@ -1,7 +1,7 @@
 # Subnet
 resource "aws_subnet" "public" {
     vpc_id = aws_vpc.vpc.id
-    cidr_block = var.subnet_cidr_blocks[0]
+    cidr_block = var.subnet_cidr_block_public
     availability_zone = var.availability_zone_1
     tags = { Name = "${var.pre_tag_name}-subnet-public" }
 }
@@ -27,18 +27,29 @@ resource "aws_route_table_association" "public" {
 }
 
 # Private Subnet
-resource "aws_subnet" "private_1" {
+resource "aws_subnet" "api_server_1" {
     vpc_id = aws_vpc.vpc.id
-    cidr_block = var.subnet_cidr_blocks[1]
+    cidr_block = var.subnet_cidr_block_api_server_1
     availability_zone = var.availability_zone_1
-    tags = { Name = "${var.pre_tag_name}-subnet-private-1" }
+    tags = { Name = "${var.pre_tag_name}-subnet-api-server-1" }
 }
-
-resource "aws_subnet" "private_2" {
+resource "aws_subnet" "api_server_2" {
     vpc_id = aws_vpc.vpc.id
-    cidr_block = var.subnet_cidr_blocks[2]
+    cidr_block = var.subnet_cidr_block_api_server_2
     availability_zone = var.availability_zone_2
-    tags = { Name = "${var.pre_tag_name}-subnet-private-2" }
+    tags = { Name = "${var.pre_tag_name}-subnet-api-server-2" }
+}
+resource "aws_subnet" "db_1" {
+    vpc_id = aws_vpc.vpc.id
+    cidr_block = var.subnet_cidr_block_db_1
+    availability_zone = var.availability_zone_1
+    tags = { Name = "${var.pre_tag_name}-subnet-api-server-1" }
+}
+resource "aws_subnet" "db_2" {
+    vpc_id = aws_vpc.vpc.id
+    cidr_block = var.subnet_cidr_block_db_2
+    availability_zone = var.availability_zone_2
+    tags = { Name = "${var.pre_tag_name}-subnet-api-server-2" }
 }
 
 # Private Route Table
@@ -54,15 +65,21 @@ resource "aws_route" "rtb_nat" {
 	destination_cidr_block = "0.0.0.0/0"
 }
 
-# private route table - private subnet 1
-resource "aws_route_table_association" "subnet_1" {
-    subnet_id = aws_subnet.private_1.id
+# private route table - private subnet
+resource "aws_route_table_association" "api_server_1" {
+    subnet_id = aws_subnet.api_server_1.id
     route_table_id = aws_route_table.private.id
 }
-
-# private route table - private subnet 2
-resource "aws_route_table_association" "subnet_2" {
-    subnet_id = aws_subnet.private_2.id
+resource "aws_route_table_association" "api_server_2" {
+    subnet_id = aws_subnet.api_server_2.id
+    route_table_id = aws_route_table.private.id
+}
+resource "aws_route_table_association" "db_1" {
+    subnet_id = aws_subnet.db_1.id
+    route_table_id = aws_route_table.private.id
+}
+resource "aws_route_table_association" "db_2" {
+    subnet_id = aws_subnet.db_2.id
     route_table_id = aws_route_table.private.id
 }
 
