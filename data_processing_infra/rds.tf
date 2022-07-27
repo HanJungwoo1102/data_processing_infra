@@ -15,27 +15,7 @@ resource "aws_db_instance" "main" {
 
 resource "aws_db_subnet_group" "db" {
     name       = "${var.pre_tag_name}-subnet-group-db"
-    subnet_ids = [aws_subnet.db_2.id, aws_subnet.db_1.id]
+    subnet_ids = [aws_subnet.db_1.id, aws_subnet.db_2.id]
 
     tags = { Name = "${var.pre_tag_name}-subnet-group-db" }
-}
-
-resource "aws_security_group" "db" {
-    name        = "db-security-group"
-    description = "db security group"
-    vpc_id = aws_vpc.vpc.id
-    ingress {
-        from_port       = 3306
-        to_port         = 3306
-        protocol        = "tcp"
-        cidr_blocks = [var.subnet_cidr_block_api_server_1, var.subnet_cidr_block_api_server_2, var.subnet_cidr_block_public]
-    }
-    # Allow all outbound traffic.
-    egress {
-        from_port   = 0
-        to_port     = 0
-        protocol    = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-    tags = { Name = "${var.pre_tag_name}-security-group-db" }
 }

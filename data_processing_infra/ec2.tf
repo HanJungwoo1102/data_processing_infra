@@ -2,7 +2,7 @@ resource "aws_instance" "data_management" {
     ami = var.ec2_config_data_management.ami
     instance_type = var.ec2_config_data_management.type
     subnet_id = aws_subnet.public.id
-    vpc_security_group_ids = [aws_default_security_group.default.id]
+    vpc_security_group_ids = [aws_security_group.private_ec2.id]
     # root disk
     root_block_device {
         volume_size           = var.ec2_config_data_management.root_volume_size

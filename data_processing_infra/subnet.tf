@@ -27,6 +27,12 @@ resource "aws_route_table_association" "public" {
 }
 
 # Private Subnet
+resource "aws_subnet" "data_management_1" {
+    vpc_id = aws_vpc.vpc.id
+    cidr_block = var.subnet_cidr_block_data_management_1
+    availability_zone = var.availability_zone_1
+    tags = { Name = "${var.pre_tag_name}-subnet-data-management-1" }
+}
 resource "aws_subnet" "api_server_1" {
     vpc_id = aws_vpc.vpc.id
     cidr_block = var.subnet_cidr_block_api_server_1
@@ -43,13 +49,13 @@ resource "aws_subnet" "db_1" {
     vpc_id = aws_vpc.vpc.id
     cidr_block = var.subnet_cidr_block_db_1
     availability_zone = var.availability_zone_1
-    tags = { Name = "${var.pre_tag_name}-subnet-api-server-1" }
+    tags = { Name = "${var.pre_tag_name}-subnet-db-1" }
 }
 resource "aws_subnet" "db_2" {
     vpc_id = aws_vpc.vpc.id
     cidr_block = var.subnet_cidr_block_db_2
     availability_zone = var.availability_zone_2
-    tags = { Name = "${var.pre_tag_name}-subnet-api-server-2" }
+    tags = { Name = "${var.pre_tag_name}-subnet-db-2" }
 }
 
 # Private Route Table
@@ -66,6 +72,10 @@ resource "aws_route" "rtb_nat" {
 }
 
 # private route table - private subnet
+resource "aws_route_table_association" "data_management_1" {
+    subnet_id = aws_subnet.data_management_1.id
+    route_table_id = aws_route_table.private.id
+}
 resource "aws_route_table_association" "api_server_1" {
     subnet_id = aws_subnet.api_server_1.id
     route_table_id = aws_route_table.private.id

@@ -5,6 +5,7 @@ module "data_processing_infra" {
     availability_zone_2 = "ap-northeast-2b"
     vpc_cidr_block = "10.0.0.0/24"
     subnet_cidr_block_public = "10.0.0.0/28"
+    subnet_cidr_block_data_management_1 = "10.0.0.80/28"
     subnet_cidr_block_api_server_1 = "10.0.0.16/28"
     subnet_cidr_block_api_server_2 = "10.0.0.32/28"
     subnet_cidr_block_db_1 = "10.0.0.48/28"
