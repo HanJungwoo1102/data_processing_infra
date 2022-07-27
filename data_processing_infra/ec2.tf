@@ -1,8 +1,8 @@
 resource "aws_instance" "data_management" {
     ami = var.ec2_config_data_management.ami
     instance_type = var.ec2_config_data_management.type
-    subnet_id = aws_subnet.public.id
-    vpc_security_group_ids = [aws_security_group.private_ec2.id]
+    subnet_id = aws_subnet.data_management_1.id
+
     # root disk
     root_block_device {
         volume_size           = var.ec2_config_data_management.root_volume_size
@@ -18,7 +18,12 @@ resource "aws_instance" "data_management" {
         encrypted             = true
         delete_on_termination = true
     }
+    
+    iam_instance_profile = aws_iam_instance_profile.code_deploy_ec2.name
+    vpc_security_group_ids = [aws_security_group.private_ec2.id]
     key_name = var.ec2_config_data_management.key_pair_name
+    
+    volume_tags = { Name = "${var.pre_tag_name}-ec2-volume-data-management" }
     tags = { Name = "${var.pre_tag_name}-ec2-data-management" }
 }
 

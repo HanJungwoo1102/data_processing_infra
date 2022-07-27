@@ -11,7 +11,7 @@ resource "aws_autoscaling_group" "api_server" {
     target_group_arns = [aws_lb_target_group.asg_api_server.arn]
 
     min_size = 1
-    max_size = 2
+    max_size = 3
 
     tag {
         key = "Name"

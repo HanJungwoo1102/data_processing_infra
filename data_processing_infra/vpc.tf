@@ -82,7 +82,7 @@ resource "aws_security_group" "alb" {
         from_port   = 80
         to_port     = 80
         protocol    = "tcp"
-        cidr_blocks = [var.vpc_cidr_block]
+        cidr_blocks = ["0.0.0.0/0"]
     }
     ## 모든 아웃바운드 트래픽을 허용
     egress {

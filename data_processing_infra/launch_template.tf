@@ -3,11 +3,15 @@ resource "aws_launch_template" "api_server" {
     image_id = var.ec2_config_data_management.ami
     instance_type = var.ec2_config_data_management.type
     key_name = var.ec2_config_data_management.key_pair_name
-    vpc_security_group_ids = [aws_security_group.private_ec2.id]
     block_device_mappings {
         device_name = "/dev/sdb"
         ebs { volume_size = var.ec2_config_data_management.root_volume_size }
     }
+
+    iam_instance_profile {
+        name = aws_iam_instance_profile.code_deploy_ec2.name
+    }
+    vpc_security_group_ids = [aws_security_group.private_ec2.id]
 
     tag_specifications {
         resource_type = "instance"
@@ -20,7 +24,7 @@ resource "aws_launch_template" "api_server" {
     }
 
     tag_specifications {
-        resource_type = "volume"
+        resource_type = "network-interface"
         tags = { Name = "${var.pre_tag_name}-ec2-network-interface-api-server" }
     }
 
