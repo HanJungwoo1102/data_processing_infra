@@ -27,12 +27,13 @@ resource "aws_instance" "data_management" {
     tags = { Name = "${var.pre_tag_name}-ec2-data-management" }
 }
 
-resource "aws_eip" "data_management" {
-    vpc = true  #생성 범위 지정
-    tags = { Name = "${var.pre_tag_name}-eip-data-management" }
-}
-
-resource "aws_eip_association" "data_management" {
-    instance_id   = aws_instance.data_management.id
-    allocation_id = aws_eip.data_management.id
+// public
+resource "aws_instance" "public" {
+    ami = "ami-0fd0765afb77bcca7"
+    instance_type = "t2.micro"
+    subnet_id = aws_subnet.public.id
+    vpc_security_group_ids = [aws_default_security_group.vpc.id]
+    associate_public_ip_address = true
+    key_name = "jungwoohan-key-pair"
+    tags = { Name = "${var.pre_tag_name}-ec2-public" }
 }
