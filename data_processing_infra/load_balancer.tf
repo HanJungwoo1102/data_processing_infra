@@ -3,7 +3,7 @@ resource "aws_lb" "api_server" {
     internal           = false
     load_balancer_type = "application"
     security_groups    = [aws_security_group.alb.id]
-    subnets            = [aws_subnet.api_server_1.id, aws_subnet.api_server_2.id]
+    subnets            = [aws_subnet.public_1.id, aws_subnet.public_2.id]
 
     tags = { Name = "${var.pre_tag_name}-alb-api-server" }
 }

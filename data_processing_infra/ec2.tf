@@ -31,7 +31,7 @@ resource "aws_instance" "data_management" {
 resource "aws_instance" "public" {
     ami = "ami-0fd0765afb77bcca7"
     instance_type = "t2.micro"
-    subnet_id = aws_subnet.public.id
+    subnet_id = aws_subnet.public_1.id
     vpc_security_group_ids = [aws_default_security_group.vpc.id]
     associate_public_ip_address = true
     key_name = "jungwoohan-key-pair"

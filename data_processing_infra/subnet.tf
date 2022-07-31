@@ -1,15 +1,20 @@
 # Subnet
-resource "aws_subnet" "public" {
+resource "aws_subnet" "public_1" {
     vpc_id = aws_vpc.vpc.id
-    cidr_block = var.subnet_cidr_block_public
+    cidr_block = var.subnet_cidr_block_public_1
     availability_zone = var.availability_zone_1
-    tags = { Name = "${var.pre_tag_name}-subnet-public" }
+    tags = { Name = "${var.pre_tag_name}-subnet-public-1" }
+}
+resource "aws_subnet" "public_2" {
+    vpc_id = aws_vpc.vpc.id
+    cidr_block = var.subnet_cidr_block_public_2
+    availability_zone = var.availability_zone_2
+    tags = { Name = "${var.pre_tag_name}-subnet-public-2" }
 }
 
 # Public Route Table
 resource "aws_route_table" "public" {
     vpc_id = aws_vpc.vpc.id
-
     tags = { Name = "${var.pre_tag_name}-rtb-public" }
 }
 
@@ -21,8 +26,12 @@ resource "aws_route" "rtb_igw" {
 }
 
 # public route table - public subnet
-resource "aws_route_table_association" "public" {
-    subnet_id      = aws_subnet.public.id
+resource "aws_route_table_association" "public_1" {
+    subnet_id      = aws_subnet.public_1.id
+    route_table_id = aws_route_table.public.id
+}
+resource "aws_route_table_association" "public_2" {
+    subnet_id      = aws_subnet.public_2.id
     route_table_id = aws_route_table.public.id
 }
 
@@ -102,6 +111,6 @@ resource "aws_eip" "nat_gw" {
 # NAT
 resource "aws_nat_gateway" "nat_gw" {
     allocation_id = aws_eip.nat_gw.id
-    subnet_id = aws_subnet.public.id
+    subnet_id = aws_subnet.public_1.id
     tags = { Name = "${var.pre_tag_name}-nat-gw" }
 }
