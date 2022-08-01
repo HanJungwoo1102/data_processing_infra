@@ -24,6 +24,17 @@ module "data_processing_infra" {
         username = var.db_config_username
         password = var.db_config_password
     }
+
+    github_name = "sunrisehouse"
+    github_respository_api_server = {
+        name = "lgcns_api_server"
+        branch = "main"
+    }
+    github_repository_data_management = {
+        name = "lgcns_data_manager"
+        branch = "main"
+    }
+
     pre_tag_name = "jungwoohan"
     default_tags = {
         User = "jungwoo.han"

@@ -53,3 +53,15 @@ variable subnet_cidr_block_db_1 {
 variable subnet_cidr_block_db_2 {
     type = string
 }
+
+variable github_name {
+    type = string
+}
+
+variable github_repository_data_management {
+    type = map(string)
+}
+
+variable github_respository_api_server {
+    type = map(string)
+}
