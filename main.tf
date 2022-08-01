@@ -26,7 +26,7 @@ module "data_processing_infra" {
     }
 
     github_name = "sunrisehouse"
-    github_respository_api_server = {
+    github_repository_api_server = {
         name = "lgcns_api_server"
         branch = "main"
     }

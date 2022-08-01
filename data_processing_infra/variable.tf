@@ -62,6 +62,6 @@ variable github_repository_data_management {
     type = map(string)
 }
 
-variable github_respository_api_server {
+variable github_repository_api_server {
     type = map(string)
 }
