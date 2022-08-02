@@ -33,7 +33,7 @@ resource "aws_iam_instance_profile" "code_deploy_ec2" {
 #============================================================
 
 resource "aws_iam_role" "code_build" {
-    name = "example"
+    name = "${var.pre_tag_name}-iam-role-code-build"
 
     assume_role_policy = jsonencode({
         Version = "2012-10-17"
@@ -113,6 +113,54 @@ resource "aws_iam_role_policy" "code_build" {
 }
 
 #============================================================
+# Code Deploy Role
+#============================================================
+
+resource "aws_iam_role" "code_deploy" {
+    name = "${var.pre_tag_name}-iam-role-code-deploy"
+
+    assume_role_policy = jsonencode({
+        Version = "2012-10-17",
+        Statement = [
+            {
+                Sid = "",
+                Effect = "Allow",
+                Principal = {
+                    Service: "codedeploy.amazonaws.com"
+                },
+                Action = "sts:AssumeRole"
+            }
+        ]
+    })
+}
+
+resource "aws_iam_role_policy" "code_deploy" {
+    role = aws_iam_role.code_deploy.name
+
+    policy = jsonencode({
+        Version = "2012-10-17",
+        Statement = [
+            {
+                Effect = "Allow",
+                Resource = [
+                    "*"
+                ],
+                Action = [
+                    "EC2:RunInstances",
+                    "EC2:CreateTags",
+                    "iam:PassRole",
+                ]
+            }
+        ]
+    })
+}
+
+resource "aws_iam_role_policy_attachment" "code_deploy" {
+    policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
+    role       = aws_iam_role.code_deploy.name
+}
+
+#============================================================
 # Code Pipeline Role
 #============================================================
 
@@ -171,7 +219,26 @@ resource "aws_iam_role_policy" "code_pipeline" {
                     "codebuild:StartBuild"
                 ],
                 Resource = "*"
-            }
+            },
+            {
+                Effect = "Allow",
+                Action = [
+                    "codedeploy:*",
+                ],
+                Resource = [
+                    aws_codedeploy_deployment_group.data_management.arn,
+                    aws_codedeploy_deployment_group.api_server.arn,
+                    aws_codedeploy_app.api_server.arn,
+                    aws_codedeploy_app.data_management.arn,
+                ]
+            },
+            {
+                Effect = "Allow",
+                Action = [
+                    "codedeploy:GetDeploymentConfig"
+                ],
+                Resource : "*"
+            },
         ]
     })
 }

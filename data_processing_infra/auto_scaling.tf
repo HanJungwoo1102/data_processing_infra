@@ -10,8 +10,9 @@ resource "aws_autoscaling_group" "api_server" {
     ## target그룹 연결
     target_group_arns = [aws_lb_target_group.asg_api_server.arn]
 
+    desired_capacity = 1
     min_size = 1
-    max_size = 3
+    max_size = 1
 
     tag {
         key = "Name"
