@@ -28,5 +28,7 @@ resource "aws_launch_template" "api_server" {
         tags = { Name = "${var.pre_tag_name}-ec2-network-interface-api-server" }
     }
 
+    user_data = filebase64("scripts/initialize_ec2_instance.sh")
+
     tags = { Name = "${var.pre_tag_name}-launch-template-api-server" }
 }
