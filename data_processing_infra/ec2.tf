@@ -23,6 +23,8 @@ resource "aws_instance" "data_management" {
     vpc_security_group_ids = [aws_security_group.private_ec2.id]
     key_name = var.ec2_config_data_management.key_pair_name
     
+    user_data = "${file("scripts/initialize_ec2_instance.sh")}"
+
     volume_tags = { Name = "${var.pre_tag_name}-ec2-volume-data-management" }
     tags = { Name = "${var.pre_tag_name}-ec2-data-management" }
 }

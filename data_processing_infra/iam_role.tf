@@ -23,6 +23,11 @@ resource "aws_iam_role_policy_attachment" "code_deploy_ec2" {
     role       = aws_iam_role.code_deploy_ec2.name
 }
 
+resource "aws_iam_role_policy_attachment" "code_deploy_ec2_cloud_watch" {
+    policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+    role       = aws_iam_role.code_deploy_ec2.name
+}
+
 resource "aws_iam_instance_profile" "code_deploy_ec2" {
     name = "${var.pre_tag_name}-iam-instance-profile-codedeploy-ec2"
     role = aws_iam_role.code_deploy_ec2.name
