@@ -7,6 +7,11 @@ resource "aws_codebuild_project" "data_management" {
         image                       = "aws/codebuild/amazonlinux2-x86_64-standard:4.0"
         type                        = "LINUX_CONTAINER"
         image_pull_credentials_type = "CODEBUILD"
+
+        environment_variable {
+            name  = "ENV_CONTENTS"
+            value = var.env_contents_data_management
+        }
     }
 
     source {

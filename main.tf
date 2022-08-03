@@ -39,16 +39,18 @@ module "data_processing_infra" {
     default_tags = {
         User = "jungwoo.han"
     }
+
+    env_contents_data_management = filebase64("data/data_management.env")
 }
 
-variable "db_config_db_name" {
+variable db_config_db_name {
     type = string
 }
 
-variable "db_config_username" {
+variable db_config_username {
     type = string
 }
 
-variable "db_config_password" {
+variable db_config_password {
     type = string
 }

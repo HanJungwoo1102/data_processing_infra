@@ -16,7 +16,7 @@ resource "aws_lb_target_group" "asg_api_server" {
     vpc_id   = aws_vpc.vpc.id
 
     health_check {
-        path                = "/health-check"
+        path                = "/health"
         protocol            = "HTTP"
         matcher             = "200"
         interval            = 15
@@ -81,7 +81,7 @@ resource "aws_alb_target_group" "data_management" {
     vpc_id   = aws_vpc.vpc.id
 
     health_check {
-        path                = "/health-check"
+        path                = "/health"
         protocol            = "HTTP"
         matcher             = "200"
         interval            = 15

@@ -65,3 +65,7 @@ variable github_repository_data_management {
 variable github_repository_api_server {
     type = map(string)
 }
+
+variable env_contents_data_management {
+    type = string
+}
