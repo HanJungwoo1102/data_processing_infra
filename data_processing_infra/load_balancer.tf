@@ -11,12 +11,13 @@ resource "aws_lb" "api_server" {
 # ALB 타겟그룹 생성
 resource "aws_lb_target_group" "asg_api_server" {
     name     = "${var.pre_tag_name}-albtg-api-server"
-    port     = 80
+    port     = var.web_server_port
     protocol = "HTTP"
     vpc_id   = aws_vpc.vpc.id
 
     health_check {
         path                = "/health"
+        port                = var.web_server_port
         protocol            = "HTTP"
         matcher             = "200"
         interval            = 15
@@ -76,12 +77,13 @@ resource "aws_lb" "data_management" {
 
 resource "aws_alb_target_group" "data_management" {
     name     = "${var.pre_tag_name}-albtg-data-management"
-    port     = 80
+    port     = var.web_server_port
     protocol = "HTTP"
     vpc_id   = aws_vpc.vpc.id
 
     health_check {
         path                = "/health"
+        port                = var.web_server_port
         protocol            = "HTTP"
         matcher             = "200"
         interval            = 15
@@ -96,7 +98,7 @@ resource "aws_alb_target_group" "data_management" {
 resource "aws_alb_target_group_attachment" "data_management" {
     target_group_arn = aws_alb_target_group.data_management.arn
     target_id        = aws_instance.data_management.id
-    port             = 80
+    port             = var.web_server_port
 }
 
 resource "aws_lb_listener" "http_d" {

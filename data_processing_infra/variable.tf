@@ -69,3 +69,11 @@ variable github_repository_api_server {
 variable env_contents_data_management {
     type = string
 }
+
+variable env_contents_api_server {
+    type = string
+}
+
+variable web_server_port {
+    type = number
+}

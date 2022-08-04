@@ -19,6 +19,10 @@ module "data_processing_infra" {
         root_volume_size = "50"
         ebs_volume_size = "128"
     }
+
+    env_contents_data_management = filebase64("data/data_management/.env")
+    env_contents_api_server = filebase64("data/api_server/application.yaml")
+
     db_config = {
         db_name = var.db_config_db_name
         username = var.db_config_username
@@ -35,12 +39,12 @@ module "data_processing_infra" {
         branch = "main"
     }
 
+    web_server_port = 8080
+
     pre_tag_name = "jungwoohan"
     default_tags = {
         User = "jungwoo.han"
     }
-
-    env_contents_data_management = filebase64("data/data_management.env")
 }
 
 variable db_config_db_name {

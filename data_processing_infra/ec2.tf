@@ -37,5 +37,6 @@ resource "aws_instance" "public" {
     vpc_security_group_ids = [aws_default_security_group.vpc.id]
     associate_public_ip_address = true
     key_name = "jungwoohan-key-pair"
+    user_data = "${file("data/initialize_ec2_instance.sh")}"
     tags = { Name = "${var.pre_tag_name}-ec2-public" }
 }

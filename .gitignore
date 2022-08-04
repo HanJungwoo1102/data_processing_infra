@@ -1,6 +1,7 @@
 set_environments.sh
 .vscode
-data_management.env
+.env
+application.yaml
 
 # Local .terraform directories
 **/.terraform/*
