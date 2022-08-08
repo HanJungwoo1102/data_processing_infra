@@ -4,9 +4,9 @@ sudo yum update -y
 
 echo "#[CLOUD WATCH]=================================================================="
 wget https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py
-wget https://s3.amazonaws.com/aws-codedeploy-ap-northeast-2/cloudwatch/codedeploy_logs.conf
+wget https://s3.amazonaws.com/aws-codedeploy-us-east-1/cloudwatch/codedeploy_logs.conf
 chmod +x ./awslogs-agent-setup.py
-python awslogs-agent-setup.py -n -r ap-northeast-2 -c s3://aws-codedeploy-ap-northeast-2/cloudwatch/awslogs.conf
+python awslogs-agent-setup.py -n -r ap-northeast-2 -c s3://aws-codedeploy-us-east-1/cloudwatch/awslogs.conf
 mkdir -p /var/awslogs/etc/config
 cp codedeploy_logs.conf /var/awslogs/etc/config/
 service awslogs restart
@@ -46,3 +46,6 @@ export GRADLE_HOME=/opt/gradle/gradle-7.5
 export PATH=\$PATH:\$GRADLE_HOME/bin
 EOF
 source /etc/profile.d/gradle.sh
+
+echo "#[Git Install]==============================================================="
+sudo yum install git -y
