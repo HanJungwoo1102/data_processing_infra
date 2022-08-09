@@ -30,6 +30,8 @@ resource "aws_codedeploy_deployment_group" "api_server" {
         deployment_type   = "BLUE_GREEN"
     }
 
+    autoscaling_groups = [aws_autoscaling_group.api_server.name]
+
     load_balancer_info {
         target_group_info {
             name = aws_lb_target_group.asg_api_server.name
